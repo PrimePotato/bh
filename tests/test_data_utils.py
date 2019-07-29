@@ -14,7 +14,8 @@ class TestDataUtils(TestCase):
         cls.hdr_date = "Date"
         cls.hdr_last_price = "Last Price"
 
-        cls.mock_outlier_series = [random.uniform(1,2)]*100 + [random.uniform(1e4,1e6)] + [random.uniform(1,2)]*10
+        cls.mock_outlier_series = [random.gauss(0, 0.1) for _ in range(100)] + [random.gauss(1e6, 1)] + [
+            random.gauss(0, 0.1) for _ in range(100)]
 
         cls.parsers = {
             cls.hdr_date: parse_date,
@@ -97,8 +98,8 @@ class TestDataUtils(TestCase):
     def test_iqr_bounds(self):
         data = [20, 15, 10, 5, 0]
         l, h = iqr_bounds(data)
-        self.assertEqual(l, 2.5)
-        self.assertEqual(h, 17.5)
+        self.assertEqual(l, -15)
+        self.assertEqual(h, 35)
 
     def test_mad_z_score(self):
         data = list(range(1, 50))
@@ -106,14 +107,13 @@ class TestDataUtils(TestCase):
 
     def test_outliers_mad(self):
         i = outliers_mad(self.mock_outlier_series)
-        self.mock_outlier_series[i[0]]
-        # self.assertEqual[i[0], 100)
+        self.assertEqual(i[0], 100)
 
     def test_outliers_iqr(self):
-        i = outliers_iqr(self.mock_outlier_series)
+        i = outliers_iqr(self.mock_outlier_series, k=10)
         self.assertEqual(i[0], 100)
 
     def test_outliers_zcs(self):
         i = outliers_zcs(self.mock_outlier_series)
         self.assertEqual(i[0], 100)
-self.mock_outlier_series[i[0]]
+    # self.mock_outlier_series[i[0]]

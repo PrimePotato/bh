@@ -67,9 +67,9 @@ def ew_ma(series: List[float], decay: float = 0.01) -> List[float]:
     return result
 
 
-def ew_var(series: List[float], decay: float = 0.01) -> List[float]:
+def ew_var(series: List[float], decay: float = 0.01, initial=0.1) -> List[float]:
     ewma = ew_ma(series, decay)
-    diff = [0.01]
+    diff = [initial]
     for i in range(1, len(ewma)):
         d = (series[i] - ewma[i - 1])
         diff.append(d * d)
@@ -99,11 +99,11 @@ def find_first_in_pair(data):
 
 def outliers_zcs(series, decay=0.01, threshold=6):
     ez = ew_zsc(series, decay)
-    ez_outliers = [i - 1 for i, x in enumerate(ez) if abs(x) > threshold]
+    ez_outliers = [i for i, x in enumerate(ez) if abs(x) > threshold]
     return find_first_in_pair(ez_outliers)
 
 
-def outliers_iqr(series, n=30, k=3):
+def outliers_iqr(series, n=30, k=5):
     qs = rolling_window_apply(series, lambda x: iqr_bounds(x, k), n, na_value=(float('nan'), float('nan')))
     qs_outliers = []
     for i, (s, (q1, q2)) in enumerate(zip(series, qs)):
@@ -216,7 +216,7 @@ def rolling_window_apply(data, func, n=10, na_value=float('nan')):
     return [na_value] * n + [func(data[i:i + n]) for i in range(len(data) - n + 1)]
 
 
-def iqr_bounds(data: List[float], k: float = 1.5) -> Tuple[float, float]:
+def iqr_bounds(data: List[float], k: float = 5) -> Tuple[float, float]:
     m = median(data)
     l, h = quartiles(data)
     return m - k * (m - l), m + k * (h - m)
@@ -228,6 +228,6 @@ def mad_z_score(data: List[float], min_dev=1e-14) -> float:
         mad = median([abs(y - m) for y in data])
         if mad < min_dev:
             return 0.
+        return 0.67449 * (data[-1] - m) / mad
     except Exception:
         return 0.
-    return 0.67449 * (data[-1] - m) / mad
