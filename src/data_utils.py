@@ -123,7 +123,7 @@ def forward_fill_val(series: List[float], val):
 
 def median(l, pivot_fn=random.choice):
     if len(l) % 2 == 1:
-        return partition_select(l, len(l) / 2, pivot_fn)
+        return partition_select(l, (len(l) - 1) / 2, pivot_fn)
     else:
         return 0.5 * (partition_select(l, len(l) / 2 - 1, pivot_fn) +
                       partition_select(l, len(l) / 2, pivot_fn))
@@ -144,3 +144,20 @@ def partition_select(data, k, pivot_fn):
         return pivots[0]
     else:
         return partition_select(higher, k - len(lower) - len(pivots), pivot_fn)
+
+
+def quartiles(data):
+    m = median(data)
+    ql = median([d for d in data if d <= m])
+    qh = median([d for d in data if d >= m])
+    return ql, qh
+
+
+def rolling_window_apply(data, func, n=10):
+    return [func(data[i:i + n]) for i in range(len(data) - n + 1)]
+
+
+def iqr_bounds(data, k=1.5):
+    m = median(data)
+    l, h = quartiles(data)
+    return m - k * (m - l), m + k * (h - m)

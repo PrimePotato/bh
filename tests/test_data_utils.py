@@ -91,7 +91,24 @@ class TestDataUtils(TestCase):
         self.assertAlmostEqual(median([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]), 6.5)
 
     def test_partition_select(self):
+        l = [9, 8, 7, 6, 5, 4, 3, 2, 1]
+        partition_select(l, 4, lambda x: x[0])
+        self.assertEqual(1, 1)
+
+    def test_quartiles(self):
         pass
 
-    def test_parition(self):
-        pass
+    def test_rolling_window_apply(self):
+        s = 100
+        n = 10
+        f = sum
+        data = list(range(1, s))
+        w = rolling_window_apply(data, f, n=n)
+        self.assertEqual(len(w), s-n)
+        self.assertEqual(w[-1], f(range(s-n, s)))
+
+    def test_iqr_bounds(self):
+        data = [20, 15, 10, 5, 0]
+        l, h = iqr_bounds(data)
+        return 1.
+
