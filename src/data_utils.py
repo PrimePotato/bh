@@ -17,16 +17,18 @@ def read_csv(file_name: str, parsers: dict) -> dict:
 
 
 def parse_date(dt: str) -> datetime:
-    d = [int(x) for x in dt.split("/")]
-    return datetime.datetime(d[2], d[1], d[0])
+    try:
+        d = [int(x) for x in dt.split("/")]
+        return datetime.datetime(d[2], d[1], d[0])
+    except ValueError:
+        return None
 
 
 def parse_float(d: str) -> float:
-    # Todo: try except
-    if d == '':
-        return float('nan')
-    else:
+    try:
         return float(d)
+    except ValueError:
+        return float('nan')
 
 
 def stale_data(series: List[float], dates: List[datetime.datetime],
@@ -77,6 +79,43 @@ def ew_std(series: List[float], decay: float = 0.01) -> List[float]:
     return [math.sqrt(x) for x in ew_var(series, decay)]
 
 
+def fill_find_next(i, sorted_seq):
+    for s in sorted_seq:
+        if s > i:
+            return s
+    return sorted_seq[-1]
+
+
+def forward_fill_mad(series, n=30, threshold=6):
+    mad_z = rolling_window_apply(series, mad_z_score, n)
+    mad_z_outliers = [i - 1 for i, x in enumerate(mad_z) if abs(x) > threshold]
+    return forward_fill_outliers(series, mad_z_outliers), len(mad_z_outliers)
+
+
+def forward_fill_zcs(series, decay=0.01, threshold=6):
+    ez = ew_zsc(series, decay)
+    ez_outliers = [i - 1 for i, x in enumerate(ez) if abs(x) > threshold]
+    return forward_fill_outliers(series, ez_outliers), len(ez_outliers)
+
+
+def forward_fill_iqr(series, n=30, k=3):
+    qs = rolling_window_apply(series, lambda x: iqr_bounds(x, k), n, na_value=(float('nan'), float('nan')))
+    qs_outliers = []
+    for i, (s, (q1, q2)) in enumerate(zip(series, qs)):
+        if s < q1 or q2 < s:
+            qs_outliers.append(i)
+    return forward_fill_outliers(series, qs_outliers), len(qs_outliers)
+
+
+def forward_fill_outliers(series, outlier_indicies):
+    good_indiicies = sorted(list(set(range(len(series))) - set(outlier_indicies)))
+    filled = series.copy()
+    for oi in outlier_indicies:
+        ri = fill_find_next(oi, good_indiicies)
+        filled[oi] = series[ri]
+    return filled
+
+
 def ew_zsc(series: List[float], decay: float = 0.01) -> List[float]:
     ma = deque(ew_ma(series, decay))
     ma.rotate(1)
@@ -87,7 +126,7 @@ def ew_zsc(series: List[float], decay: float = 0.01) -> List[float]:
     return [(s - a) / v for s, a, v in zip(series, ma, std)]
 
 
-def forward_fill_na(series: List[float]) -> List[float]:
+def forward_fill_na(series: List[float]) -> Tuple[List[float], int]:
     cleaned = []
 
     last_val = float('nan')
@@ -105,7 +144,11 @@ def forward_fill_na(series: List[float]) -> List[float]:
     return cleaned, len(cleaned) - i
 
 
-def forward_fill_val(series: List[float], val) -> List[float]:
+def forward_fill_zeros(series: List[float]) -> Tuple[List[float], int]:
+    return forward_fill_val(series, 0)
+
+
+def forward_fill_val(series: List[float], val: float) -> Tuple[List[float], int]:
     cleaned = []
     last_val = float('nan')
     for s in series:
@@ -123,10 +166,10 @@ def forward_fill_val(series: List[float], val) -> List[float]:
 
 def median(l, pivot_fn=random.choice):
     if len(l) % 2 == 1:
-        return partition_select(l, (len(l) - 1) / 2, pivot_fn)
+        return partition_select(l, int((len(l) - 1) / 2), pivot_fn)
     else:
-        return 0.5 * (partition_select(l, len(l) / 2 - 1, pivot_fn) +
-                      partition_select(l, len(l) / 2, pivot_fn))
+        return 0.5 * (partition_select(l, int(len(l) / 2 - 1), pivot_fn) +
+                      partition_select(l, int(len(l) / 2), pivot_fn))
 
 
 def partition_select(data: List[float], k: int, pivot_fn) -> int:
@@ -146,15 +189,15 @@ def partition_select(data: List[float], k: int, pivot_fn) -> int:
         return partition_select(higher, k - len(lower) - len(pivots), pivot_fn)
 
 
-def quartiles(data: List[float]) -> Tuple[float, float]:
+def quartiles(data: List[float]):
     m = median(data)
     ql = median([d for d in data if d <= m])
     qh = median([d for d in data if d >= m])
     return ql, qh
 
 
-def rolling_window_apply(data, func, n=10):
-    return [float('nan')] * n + [func(data[i:i + n]) for i in range(len(data) - n + 1)]
+def rolling_window_apply(data, func, n=10, na_value=float('nan')):
+    return [na_value] * n + [func(data[i:i + n]) for i in range(len(data) - n + 1)]
 
 
 def iqr_bounds(data: List[float], k: float = 1.5) -> Tuple[float, float]:
@@ -163,7 +206,9 @@ def iqr_bounds(data: List[float], k: float = 1.5) -> Tuple[float, float]:
     return m - k * (m - l), m + k * (h - m)
 
 
-def mad_z_score(data: List[float]) -> float:
+def mad_z_score(data: List[float], min_dev=1e-14) -> float:
     m = median(data)
     mad = median([abs(y - m) for y in data])
+    if mad < min_dev:
+        return 0.
     return 0.67449 * (data[-1] - m) / mad

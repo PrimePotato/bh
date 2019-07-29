@@ -1,3 +1,4 @@
+import logging
 import os
 from unittest import TestCase
 
@@ -35,7 +36,7 @@ class TestDataUtils(TestCase):
         for k, v in self.data.items():
             tr = TimeSeries(v[self.hdr_date], v[self.hdr_last_price])
             dr = stale_data(tr.prices, tr.dates, datetime.timedelta(weeks=1))
-            print(str(k) + " raw " + str(len(dr)) + " " + str([tr.dates[i] for i, d in dr]) + " "
+            logging.info(str(k) + " raw " + str(len(dr)) + " " + str([tr.dates[i] for i, d in dr]) + " "
                   + str([tr.prices[i] for i, d in dr]))
 
     def test_pct_change(self):
