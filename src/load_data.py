@@ -1,3 +1,4 @@
+import datetime
 from itertools import groupby
 
 from definitions import DataSource, CSV_PATHS
@@ -8,6 +9,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 import logging
+
 
 def load_reports():
     st_dev = 5
@@ -100,8 +102,11 @@ def load_reports2():
         rem_na, na_count = du.forward_fill_na(ts.prices)
         no_zeros, zero_count = du.forward_fill_zeros(rem_na)
 
+        pc = du.pct_change(no_zeros)
+        pc_rem_na, na_c = du.forward_fill_na(pc, val=0.)
+
         mad_outliers = []
-        mad_pass = no_zeros
+        mad_pass = pc_rem_na
         for n, t in mad_pass_thresholds:
             mad_pass, c = du.forward_fill_mad(mad_pass, n, t)
             mad_outliers.append(c)
@@ -118,14 +123,19 @@ def load_reports2():
             ewz_pass, c = du.forward_fill_zcs(ewz_pass, d, t)
             ewz_outliers.append(c)
 
+        stale_dates = du.stale_data(ts.prices, ts.dates, datetime.timedelta(weeks=1))
+
         total = {
-            'total': na_count + sum(mad_outliers) + sum(ewz_outliers) + sum(iqr_outliers) + zero_count,
+            'total': na_count + sum(mad_outliers) + sum(ewz_outliers) + sum(iqr_outliers) + len(
+                stale_dates) + zero_count,
             'na_count': na_count,
             'mad_count': mad_outliers,
             'iqr_count': iqr_outliers,
             'ewz_count': ewz_outliers,
-            'zero_count': zero_count
+            'zero_count': zero_count,
+            'stale_dates': (len(stale_dates), stale_dates)
         }
         logging.info(name.name + " " + str(total))
+
 
 load_reports2()

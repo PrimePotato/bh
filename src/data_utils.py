@@ -3,6 +3,7 @@ import datetime
 import math
 import random
 from collections import defaultdict, deque
+from itertools import groupby
 from typing import List, Tuple
 
 tol = 1e-14
@@ -54,7 +55,7 @@ def stale_data(series: List[float], dates: List[datetime.datetime],
 def pct_change(series: List[float]) -> List[float]:
     prev = deque(series)
     prev.rotate(1)
-    prev[0] = float('nan')
+    prev[0] = 0.
     return [(n - p) / n if n != 0 else float('nan') for n, p in zip(series, prev)]
 
 
@@ -89,7 +90,12 @@ def fill_find_next(i, sorted_seq):
 def forward_fill_mad(series, n=30, threshold=6):
     mad_z = rolling_window_apply(series, mad_z_score, n)
     mad_z_outliers = [i - 1 for i, x in enumerate(mad_z) if abs(x) > threshold]
+    find_first_in_pair(mad_z_outliers)
     return forward_fill_outliers(series, mad_z_outliers), len(mad_z_outliers)
+
+
+def find_first_in_pair(data):
+    return [list(g)[0] for k, g in groupby(enumerate(data), lambda t: t[1] - t[0])]
 
 
 def forward_fill_zcs(series, decay=0.01, threshold=6):
@@ -109,11 +115,14 @@ def forward_fill_iqr(series, n=30, k=3):
 
 def forward_fill_outliers(series, outlier_indicies):
     good_indiicies = sorted(list(set(range(len(series))) - set(outlier_indicies)))
-    filled = series.copy()
-    for oi in outlier_indicies:
-        ri = fill_find_next(oi, good_indiicies)
-        filled[oi] = series[ri]
-    return filled
+    try:
+        filled = series.copy()
+        for oi in outlier_indicies:
+            ri = fill_find_next(oi, good_indiicies)
+            filled[oi] = series[ri]
+        return filled
+    except Exception:
+        return None
 
 
 def ew_zsc(series: List[float], decay: float = 0.01) -> List[float]:
@@ -126,21 +135,26 @@ def ew_zsc(series: List[float], decay: float = 0.01) -> List[float]:
     return [(s - a) / v for s, a, v in zip(series, ma, std)]
 
 
-def forward_fill_na(series: List[float]) -> Tuple[List[float], int]:
+def forward_fill_na(series: List[float], val=None) -> Tuple[List[float], int]:
     cleaned = []
-
     last_val = float('nan')
     for s in series:
         if s == s and abs(s) < tol:  # TODO: check zero is OK assumption to make
             last_val = s
             break
-
-    i = 0
-    for s in series:
-        if s == s:
-            last_val = s
-            i += 1
-        cleaned.append(last_val)
+    if val:
+        for s in series:
+            if s != s:
+                cleaned.append(val)
+            else:
+                cleaned.append(s)
+    else:
+        i = 0
+        for s in series:
+            if s == s:
+                last_val = s
+                i += 1
+            cleaned.append(last_val)
     return cleaned, len(cleaned) - i
 
 
@@ -190,9 +204,12 @@ def partition_select(data: List[float], k: int, pivot_fn) -> int:
 
 
 def quartiles(data: List[float]):
-    m = median(data)
-    ql = median([d for d in data if d <= m])
-    qh = median([d for d in data if d >= m])
+    try:
+        m = median(data)
+        ql = median([d for d in data if d <= m])
+        qh = median([d for d in data if d >= m])
+    except Exception:
+        pass
     return ql, qh
 
 
@@ -207,8 +224,11 @@ def iqr_bounds(data: List[float], k: float = 1.5) -> Tuple[float, float]:
 
 
 def mad_z_score(data: List[float], min_dev=1e-14) -> float:
-    m = median(data)
-    mad = median([abs(y - m) for y in data])
-    if mad < min_dev:
+    try:
+        m = median(data)
+        mad = median([abs(y - m) for y in data])
+        if mad < min_dev:
+            return 0.
+    except Exception:
         return 0.
     return 0.67449 * (data[-1] - m) / mad
