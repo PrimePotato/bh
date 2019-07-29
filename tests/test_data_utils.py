@@ -14,6 +14,8 @@ class TestDataUtils(TestCase):
         cls.hdr_date = "Date"
         cls.hdr_last_price = "Last Price"
 
+        cls.mock_outlier_series = [random.uniform(1,2)]*100 + [random.uniform(1e4,1e6)] + [random.uniform(1,2)]*10
+
         cls.parsers = {
             cls.hdr_date: parse_date,
             cls.hdr_last_price: parse_float
@@ -22,7 +24,8 @@ class TestDataUtils(TestCase):
 
     def test_read_csv(self):
         self.assertEqual(len(self.data[DataSource.EQ_CLEAN]), 2)
-        self.assertEqual(len(self.data[DataSource.EQ_CLEAN][self.hdr_date]), len(self.data[DataSource.EQ_CLEAN][self.hdr_last_price]))
+        self.assertEqual(len(self.data[DataSource.EQ_CLEAN][self.hdr_date]),
+                         len(self.data[DataSource.EQ_CLEAN][self.hdr_last_price]))
         self.assertTrue(isinstance(self.data[DataSource.EQ_CLEAN][self.hdr_date][0], datetime.datetime))
         self.assertTrue(isinstance(self.data[DataSource.EQ_CLEAN][self.hdr_last_price][0], float))
 
@@ -37,7 +40,7 @@ class TestDataUtils(TestCase):
             tr = TimeSeries(v[self.hdr_date], v[self.hdr_last_price])
             dr = stale_data(tr.prices, tr.dates, datetime.timedelta(weeks=1))
             logging.info(str(k) + " raw " + str(len(dr)) + " " + str([tr.dates[i] for i, d in dr]) + " "
-                  + str([tr.prices[i] for i, d in dr]))
+                         + str([tr.prices[i] for i, d in dr]))
 
     def test_pct_change(self):
         pct = pct_change(self.data[DataSource.EQ_CLEAN][self.hdr_last_price])
@@ -101,5 +104,16 @@ class TestDataUtils(TestCase):
         data = list(range(1, 50))
         mzs = mad_z_score(data)
 
-    def test_abc(self):
-        pass
+    def test_outliers_mad(self):
+        i = outliers_mad(self.mock_outlier_series)
+        self.mock_outlier_series[i[0]]
+        # self.assertEqual[i[0], 100)
+
+    def test_outliers_iqr(self):
+        i = outliers_iqr(self.mock_outlier_series)
+        self.assertEqual(i[0], 100)
+
+    def test_outliers_zcs(self):
+        i = outliers_zcs(self.mock_outlier_series)
+        self.assertEqual(i[0], 100)
+self.mock_outlier_series[i[0]]

@@ -87,30 +87,29 @@ def fill_find_next(i, sorted_seq):
     return sorted_seq[-1]
 
 
-def forward_fill_mad(series, n=30, threshold=6):
+def outliers_mad(series, n=30, threshold=6):
     mad_z = rolling_window_apply(series, mad_z_score, n)
     mad_z_outliers = [i - 1 for i, x in enumerate(mad_z) if abs(x) > threshold]
-    find_first_in_pair(mad_z_outliers)
-    return forward_fill_outliers(series, mad_z_outliers), len(mad_z_outliers)
+    return find_first_in_pair(mad_z_outliers)
 
 
 def find_first_in_pair(data):
-    return [list(g)[0] for k, g in groupby(enumerate(data), lambda t: t[1] - t[0])]
+    return [next(g)[1] for k, g in groupby(enumerate(data), lambda t: t[1] - t[0])]
 
 
-def forward_fill_zcs(series, decay=0.01, threshold=6):
+def outliers_zcs(series, decay=0.01, threshold=6):
     ez = ew_zsc(series, decay)
     ez_outliers = [i - 1 for i, x in enumerate(ez) if abs(x) > threshold]
-    return forward_fill_outliers(series, ez_outliers), len(ez_outliers)
+    return find_first_in_pair(ez_outliers)
 
 
-def forward_fill_iqr(series, n=30, k=3):
+def outliers_iqr(series, n=30, k=3):
     qs = rolling_window_apply(series, lambda x: iqr_bounds(x, k), n, na_value=(float('nan'), float('nan')))
     qs_outliers = []
     for i, (s, (q1, q2)) in enumerate(zip(series, qs)):
         if s < q1 or q2 < s:
             qs_outliers.append(i)
-    return forward_fill_outliers(series, qs_outliers), len(qs_outliers)
+    return find_first_in_pair(qs_outliers)
 
 
 def forward_fill_outliers(series, outlier_indicies):
