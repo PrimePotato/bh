@@ -1,7 +1,7 @@
 import os
 from unittest import TestCase
 
-from definitions import ROOT_DIR
+from definitions import ROOT_DIR, CSV_PATHS, DataSource
 from src.data_container import TimeSeries
 from src.data_utils import *
 
@@ -17,24 +17,13 @@ class TestDataUtils(TestCase):
             cls.hdr_date: parse_date,
             cls.hdr_last_price: parse_float
         }
-        # ToDo: relative paths and os path join!
-        cls.data_clean = {
-            "eq": read_csv(os.path.join(ROOT_DIR, "resources", "Equity_history_clean.csv"), cls.parsers),
-            "fx": read_csv(os.path.join(ROOT_DIR, "resources", "FX_history_clean.csv"), cls.parsers),
-            "ir": read_csv(os.path.join(ROOT_DIR, "resources", "InterestRate_history_clean.csv"), cls.parsers)
-        }
-
-        cls.data_raw = {
-            "eq": read_csv(os.path.join(ROOT_DIR, "resources", "Equity_history_raw.csv"), cls.parsers),
-            "fx": read_csv(os.path.join(ROOT_DIR, "resources", "FX_history_raw.csv"), cls.parsers),
-            "ir": read_csv(os.path.join(ROOT_DIR, "resources", "InterestRate_history_raw.csv"), cls.parsers)
-        }
+        cls.data = {k: read_csv(p, cls.parsers) for k, p in CSV_PATHS.items()}
 
     def test_read_csv(self):
-        self.assertEqual(len(self.data_clean['eq']), 2)
-        self.assertEqual(len(self.data_clean['eq'][self.hdr_date]), len(self.data_clean['eq'][self.hdr_last_price]))
-        self.assertTrue(isinstance(self.data_clean['eq'][self.hdr_date][0], datetime.datetime))
-        self.assertTrue(isinstance(self.data_clean['eq'][self.hdr_last_price][0], float))
+        self.assertEqual(len(self.data[DataSource.EQ_CLEAN]), 2)
+        self.assertEqual(len(self.data[DataSource.EQ_CLEAN][self.hdr_date]), len(self.data[DataSource.EQ_CLEAN][self.hdr_last_price]))
+        self.assertTrue(isinstance(self.data[DataSource.EQ_CLEAN][self.hdr_date][0], datetime.datetime))
+        self.assertTrue(isinstance(self.data[DataSource.EQ_CLEAN][self.hdr_last_price][0], float))
 
     def test_parse_date(self):
         self.assertEqual(parse_date("11/12/2019"), datetime.datetime(2019, 12, 11))
@@ -43,31 +32,25 @@ class TestDataUtils(TestCase):
         self.assertEqual(parse_float("5.6123"), 5.6123)
 
     def test_stale_data(self):
-        for k, v in self.data_raw.items():
+        for k, v in self.data.items():
             tr = TimeSeries(v[self.hdr_date], v[self.hdr_last_price])
             dr = stale_data(tr.prices, tr.dates, datetime.timedelta(weeks=1))
             print(str(k) + " raw " + str(len(dr)) + " " + str([tr.dates[i] for i, d in dr]) + " "
                   + str([tr.prices[i] for i, d in dr]))
 
-        for k, v in self.data_clean.items():
-            tc = TimeSeries(v[self.hdr_date], v[self.hdr_last_price])
-            dc = stale_data(tc.prices, tc.dates, datetime.timedelta(weeks=1))
-            print(str(k) + " clean " + str(len(dc)) + " " + str([tc.dates[i] for i, d in dc]) + " "
-                  + str([tc.prices[i] for i, d in dc]))
-
     def test_pct_change(self):
-        pct = pct_change(self.data_clean["eq"][self.hdr_last_price])
+        pct = pct_change(self.data[DataSource.EQ_CLEAN][self.hdr_last_price])
         pass
 
     def test_ewma(self):
-        ewma = ew_ma(self.data_clean["eq"][self.hdr_last_price])
-        self.assertEqual(len(ewma), len(self.data_clean["eq"][self.hdr_last_price]))
+        ewma = ew_ma(self.data[DataSource.EQ_CLEAN][self.hdr_last_price])
+        self.assertEqual(len(ewma), len(self.data[DataSource.EQ_CLEAN][self.hdr_last_price]))
         self.assertAlmostEqual(ewma[-1], 5430.600493220166, delta=1e-14)
 
     def test_ew_var(self):
         pass
-        # ew_var = ew_var(self.data_clean["eq"][self.hdr_last_price])
-        # self.assertEqual(len(ew_var), len(self.data_clean[self.hdr_last_price]))
+        # ew_var = ew_var(self.data[DataSource.EQ_CLEAN][self.hdr_last_price])
+        # self.assertEqual(len(ew_var), len(self.data[self.hdr_last_price]))
         # self.assertAlmostEqual(ew_var[-1], 5319.445113673711, delta=1e-14)
 
     def test_ew_std(self):
@@ -79,11 +62,11 @@ class TestDataUtils(TestCase):
         pass
 
     def test_forward_fill_na(self):
-        cleaned = forward_fill_na(self.data_clean["eq"][self.hdr_last_price])
+        cleaned = forward_fill_na(self.data[DataSource.EQ_CLEAN][self.hdr_last_price])
         self.assertEqual(len([c for c in cleaned if c != c]), 0)
 
     def test_forward_fill_val(self):
-        cleaned = forward_fill_na(self.data_clean["eq"][self.hdr_last_price])
+        cleaned = forward_fill_na(self.data[DataSource.EQ_CLEAN][self.hdr_last_price])
         self.assertEqual(len([c for c in cleaned if c != c]), 0)
 
     def test_median(self):
@@ -104,11 +87,18 @@ class TestDataUtils(TestCase):
         f = sum
         data = list(range(1, s))
         w = rolling_window_apply(data, f, n=n)
-        self.assertEqual(len(w), s-n)
-        self.assertEqual(w[-1], f(range(s-n, s)))
+        self.assertEqual(len(w), s)
+        self.assertEqual(w[-1], f(range(s - n, s)))
 
     def test_iqr_bounds(self):
         data = [20, 15, 10, 5, 0]
         l, h = iqr_bounds(data)
-        return 1.
+        self.assertEqual(l, 2.5)
+        self.assertEqual(h, 17.5)
 
+    def test_mad_z_score(self):
+        data = list(range(1, 50))
+        mzs = mad_z_score(data)
+
+    def test_abc(self):
+        pass

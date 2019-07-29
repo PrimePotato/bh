@@ -3,7 +3,7 @@ import datetime
 import math
 import random
 from collections import defaultdict, deque
-from typing import List
+from typing import List, Tuple
 
 tol = 1e-14
 
@@ -87,7 +87,7 @@ def ew_zsc(series: List[float], decay: float = 0.01) -> List[float]:
     return [(s - a) / v for s, a, v in zip(series, ma, std)]
 
 
-def forward_fill_na(series: List[float]):
+def forward_fill_na(series: List[float]) -> List[float]:
     cleaned = []
 
     last_val = float('nan')
@@ -105,7 +105,7 @@ def forward_fill_na(series: List[float]):
     return cleaned, len(cleaned) - i
 
 
-def forward_fill_val(series: List[float], val):
+def forward_fill_val(series: List[float], val) -> List[float]:
     cleaned = []
     last_val = float('nan')
     for s in series:
@@ -129,7 +129,7 @@ def median(l, pivot_fn=random.choice):
                       partition_select(l, len(l) / 2, pivot_fn))
 
 
-def partition_select(data, k, pivot_fn):
+def partition_select(data: List[float], k: int, pivot_fn) -> int:
     if len(data) == 1:
         assert k == 0
         return data[0]
@@ -146,7 +146,7 @@ def partition_select(data, k, pivot_fn):
         return partition_select(higher, k - len(lower) - len(pivots), pivot_fn)
 
 
-def quartiles(data):
+def quartiles(data: List[float]) -> Tuple[float, float]:
     m = median(data)
     ql = median([d for d in data if d <= m])
     qh = median([d for d in data if d >= m])
@@ -154,10 +154,16 @@ def quartiles(data):
 
 
 def rolling_window_apply(data, func, n=10):
-    return [func(data[i:i + n]) for i in range(len(data) - n + 1)]
+    return [float('nan')] * n + [func(data[i:i + n]) for i in range(len(data) - n + 1)]
 
 
-def iqr_bounds(data, k=1.5):
+def iqr_bounds(data: List[float], k: float = 1.5) -> Tuple[float, float]:
     m = median(data)
     l, h = quartiles(data)
     return m - k * (m - l), m + k * (h - m)
+
+
+def mad_z_score(data: List[float]) -> float:
+    m = median(data)
+    mad = median([abs(y - m) for y in data])
+    return 0.67449 * (data[-1] - m) / mad
