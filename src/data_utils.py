@@ -258,7 +258,7 @@ def mad_z_score(data: List[float], min_dev=1e-14) -> float:
         m = median(data)
         mad = median([abs(y - m) for y in data])
         if mad < min_dev:
-            return 0.
+            mad = 0.005 / math.sqrt(252)
         return 0.67449 * (data[-1] - m) / mad
     except Exception:
         return 0.

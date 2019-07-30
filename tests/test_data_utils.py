@@ -27,11 +27,11 @@ class TestDataUtils(TestCase):
         self.assertEqual(len(self.data[DataSource.EQ_CLEAN]), 2)
         self.assertEqual(len(self.data[DataSource.EQ_CLEAN][self.hdr_date]),
                          len(self.data[DataSource.EQ_CLEAN][self.hdr_last_price]))
-        self.assertTrue(isinstance(self.data[DataSource.EQ_CLEAN][self.hdr_date][0], datetime.datetime))
+        self.assertTrue(isinstance(self.data[DataSource.EQ_CLEAN][self.hdr_date][0], datetime.date))
         self.assertTrue(isinstance(self.data[DataSource.EQ_CLEAN][self.hdr_last_price][0], float))
 
     def test_parse_date(self):
-        self.assertEqual(parse_date("11/12/2019"), datetime.datetime(2019, 12, 11))
+        self.assertEqual(parse_date("11/12/2019"), datetime.date(2019, 12, 11))
 
     def test_parse_float(self):
         self.assertEqual(parse_float("5.6123"), 5.6123)
@@ -53,18 +53,19 @@ class TestDataUtils(TestCase):
         self.assertAlmostEqual(ewma[-1], 5430.600493220166, delta=1e-14)
 
     def test_ew_var(self):
-        pass
-        # ew_var = ew_var(self.data[DataSource.EQ_CLEAN][self.hdr_last_price])
-        # self.assertEqual(len(ew_var), len(self.data[self.hdr_last_price]))
-        # self.assertAlmostEqual(ew_var[-1], 5319.445113673711, delta=1e-14)
+        ewv = ew_var(self.data[DataSource.EQ_CLEAN][self.hdr_last_price])
+        self.assertEqual(len(ewv), len(self.data[DataSource.EQ_CLEAN][self.hdr_last_price]))
+        self.assertAlmostEqual(ewv[-1], 63138.114964302345, delta=1e-14)
 
     def test_ew_std(self):
-        # ew_zsc = ew_zsc(pc)
-        pass
+        ewv = ew_std(self.data[DataSource.EQ_CLEAN][self.hdr_last_price])
+        self.assertEqual(len(ewv), len(self.data[DataSource.EQ_CLEAN][self.hdr_last_price]))
+        self.assertAlmostEqual(ewv[-1], 251.27298892698823, delta=1e-14)
 
     def test_ew_zsc(self):
-        # ew_zsc = ew_zsc(pc)
-        pass
+        ewv = ew_zsc(self.data[DataSource.EQ_CLEAN][self.hdr_last_price])
+        self.assertEqual(len(ewv), len(self.data[DataSource.EQ_CLEAN][self.hdr_last_price]))
+        self.assertAlmostEqual(ewv[-1], -0.9105825661366617 , delta=1e-14)
 
     def test_forward_fill_na(self):
         cleaned = forward_fill_na(self.data[DataSource.EQ_CLEAN][self.hdr_last_price])
@@ -105,13 +106,14 @@ class TestDataUtils(TestCase):
     def test_mad_z_score(self):
         data = list(range(1, 50))
         mzs = mad_z_score(data)
+        self.assertEqual(mzs, 1.34898)
 
     def test_outliers_mad(self):
         i = outliers_mad(self.mock_outlier_series)
         self.assertEqual(i[0], 100)
 
     def test_outliers_iqr(self):
-        i = outliers_iqr(self.mock_outlier_series, k=10)
+        i = outliers_iqr(self.mock_outlier_series, k=15)
         self.assertEqual(i[0], 100)
 
     def test_outliers_zcs(self):
