@@ -44,7 +44,7 @@ def check_file_data(file_path: str) -> List[Tuple[datetime.date, float, str]]:
     iqr_outliers, cleaned = clean_returns(cleaned, du.outliers_iqr, iqr_pass_thresholds)
     ewz_outliers, cleaned = clean_returns(cleaned, du.outliers_zcs, ewz_pass_thresholds)
 
-    all_outliers += [(ts.dates[i], ts.prices[i], DataIssue.OutlierNA) for s in mad_outliers for i in s]
+    all_outliers += [(ts.dates[i], ts.prices[i], DataIssue.OutlierMAD) for s in mad_outliers for i in s]
     all_outliers += [(ts.dates[i], ts.prices[i], DataIssue.OutlierIQR) for s in iqr_outliers for i in s]
     all_outliers += [(ts.dates[i], ts.prices[i], DataIssue.OutlierEWZ) for s in ewz_outliers for i in s]
 

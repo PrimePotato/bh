@@ -19,7 +19,7 @@ class DataIssue(Enum):
     MissingNA = 1
     MissingZero = 2
     Stale = 3
-    OutlierNA = 4
+    OutlierMAD = 4
     OutlierIQR = 5
     OutlierEWZ = 6
 
