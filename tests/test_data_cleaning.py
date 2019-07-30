@@ -2,7 +2,7 @@ import logging
 from itertools import groupby
 from unittest import TestCase
 
-from data_cleaning import check_file_data
+from src.data_cleaning import check_file_data
 from definitions import CSV_PATHS, DataSource
 
 
