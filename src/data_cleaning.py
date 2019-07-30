@@ -54,7 +54,7 @@ def check_file_data(file_path: str) -> List[Tuple[datetime.date, float, str]]:
 
     dict_outliers = {}
     for outlier in all_outliers:
-        if outlier[0] in dict_outliers:
+        if outlier[0] not in dict_outliers:
             dict_outliers[outlier[0]] = outlier
         else:
             if outlier[2] < dict_outliers[outlier[0]][2]:
