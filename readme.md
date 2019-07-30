@@ -2,8 +2,8 @@
 
 ##### Requested Function Locations
 * The requested function is found in 'src.data_cleaning'
-* The test found 'test.test_data_cleaning' performs the data cleaning and checks they are within the specified bounds
-* The module 'src.data_utils' contains all the methods I needed due to being restricted to the standard library.   
+* The test found in 'test.test_data_cleaning' performs the data cleaning and checks whether they are within the specified bounds
+* The module 'src.data_utils' contains all the extra methods required without Pandas and Numpy available.   
 
 ##### Thought Process
  Data must be investigated in ascending order, so I avoid using forward looking measures, for example using the standard dev and average of the whole data set. As a result the cleaning methods use a rolling window approach or an exponential weighting.
