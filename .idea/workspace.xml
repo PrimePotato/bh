@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="69377374-6617-4cff-b001-f894a2fcad43" name="Default Changelist" comment="">
+    <list default="true" id="69377374-6617-4cff-b001-f894a2fcad43" name="Default Changelist" comment="Default Changelist">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/definitions.py" beforeDir="false" afterPath="$PROJECT_DIR$/definitions.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/data_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/data_utils.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -23,6 +21,7 @@
     <SUITE FILE_PATH="coverage/bh$Unittests_for_test_data_utils_TestDataUtils_test_iqr_bounds.coverage" NAME="Unittests for test_data_utils.TestDataUtils.test_iqr_bounds Coverage Results" MODIFIED="1564405304294" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
     <SUITE FILE_PATH="coverage/bh$pytest_for_test_dataUtils_TestDataUtils_test_read_csv.coverage" NAME="pytest for test_dataUtils.TestDataUtils.test_read_csv Coverage Results" MODIFIED="1564148529166" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
     <SUITE FILE_PATH="coverage/bh$Unittests_for_test_data_utils_TestDataUtils_test_stale_data.coverage" NAME="Unittests for test_data_utils.TestDataUtils.test_stale_data Coverage Results" MODIFIED="1564177122779" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
+    <SUITE FILE_PATH="coverage/bh$main.coverage" NAME="main Coverage Results" MODIFIED="1564484199831" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/bh$Unittests_for_test_data_utils_TestDataUtils_test_fill_na.coverage" NAME="Unittests for test_data_utils.TestDataUtils.test_fill_na Coverage Results" MODIFIED="1564151208046" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
     <SUITE FILE_PATH="coverage/bh$Unittests_for_test_data_utils_TestDataUtils_test_pct_change.coverage" NAME="Unittests for test_data_utils.TestDataUtils.test_pct_change Coverage Results" MODIFIED="1564154433294" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
     <SUITE FILE_PATH="coverage/bh$loadData.coverage" NAME="loadData Coverage Results" MODIFIED="1564145403754" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -34,7 +33,7 @@
     <SUITE FILE_PATH="coverage/bh$Unittests_for_test_data_utils_TestDataUtils_test_iqr.coverage" NAME="Unittests for test_data_utils.TestDataUtils.test_iqr Coverage Results" MODIFIED="1564405018664" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
     <SUITE FILE_PATH="coverage/bh$Unittests_for_test_data_utils_TestDataUtils_test_ew_var.coverage" NAME="Unittests for test_data_utils.TestDataUtils.test_ew_var Coverage Results" MODIFIED="1564154323187" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
     <SUITE FILE_PATH="coverage/bh$load_data.coverage" NAME="load_data Coverage Results" MODIFIED="1564439013707" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
-    <SUITE FILE_PATH="coverage/bh$load_data__1_.coverage" NAME="load_data (1) Coverage Results" MODIFIED="1564482397784" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/bh$load_data__1_.coverage" NAME="load_data (1) Coverage Results" MODIFIED="1564484142668" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="DatabaseView">
     <option name="SHOW_INTERMEDIATE" value="true" />
@@ -67,8 +66,8 @@
       <file leaf-file-name="definitions.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/definitions.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="192">
-              <caret line="12" column="21" lean-forward="true" selection-start-line="11" selection-start-column="19" selection-end-line="12" selection-end-column="21" />
+            <state relative-caret-position="432">
+              <caret line="27" lean-forward="true" selection-start-line="27" selection-end-line="27" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -79,8 +78,8 @@
       <file leaf-file-name="data_utils.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/data_utils.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="113">
-              <caret line="119" column="81" lean-forward="true" selection-start-line="119" selection-start-column="81" selection-end-line="119" selection-end-column="81" />
+            <state relative-caret-position="689">
+              <caret line="121" column="30" lean-forward="true" selection-start-line="121" selection-start-column="30" selection-end-line="121" selection-end-column="30" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
               </folding>
@@ -108,8 +107,8 @@
       <file leaf-file-name="main.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="304">
-              <caret line="29" column="56" selection-start-line="29" selection-start-column="56" selection-end-line="29" selection-end-column="56" />
+            <state relative-caret-position="314">
+              <caret line="48" column="5" lean-forward="true" selection-start-line="48" selection-start-column="5" selection-end-line="48" selection-end-column="5" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -164,8 +163,8 @@
         <option value="$PROJECT_DIR$/src/load_data.py" />
         <option value="$PROJECT_DIR$/tests/test_data_utils.py" />
         <option value="$PROJECT_DIR$/load_data.py" />
-        <option value="$PROJECT_DIR$/definitions.py" />
         <option value="$PROJECT_DIR$/src/data_utils.py" />
+        <option value="$PROJECT_DIR$/definitions.py" />
         <option value="$PROJECT_DIR$/main.py" />
       </list>
     </option>
@@ -251,7 +250,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.load_data (1)">
+  <component name="RunManager" selected="Python.main">
     <configuration name="load_data (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="bh" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -271,7 +270,7 @@
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
     </configuration>
-    <configuration name="load_data" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="bh" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -279,12 +278,12 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="M:\bh\main.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -334,18 +333,18 @@
     </configuration>
     <list>
       <item itemvalue="Python tests.Unittests for test_data_utils.TestDataUtils" />
-      <item itemvalue="Python.load_data" />
       <item itemvalue="Python tests.Unittests for test_data_utils.TestDataUtils.test_outliers_mad" />
       <item itemvalue="Python.load_data (1)" />
       <item itemvalue="Python tests.Unittests for test_data_utils.TestDataUtils.test_outliers_zcs" />
+      <item itemvalue="Python.main" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.main" />
         <item itemvalue="Python.load_data (1)" />
         <item itemvalue="Python tests.Unittests for test_data_utils.TestDataUtils.test_outliers_zcs" />
         <item itemvalue="Python tests.Unittests for test_data_utils.TestDataUtils" />
         <item itemvalue="Python tests.Unittests for test_data_utils.TestDataUtils.test_outliers_mad" />
-        <item itemvalue="Python.load_data" />
       </list>
     </recent_temporary>
   </component>
@@ -397,7 +396,14 @@
       <option name="project" value="LOCAL" />
       <updated>1564434955225</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Default Changelist">
+      <created>1564483673400</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1564483673400</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -453,12 +459,12 @@
       <window_info anchor="bottom" id="Database Changes" order="1" />
       <window_info anchor="bottom" id="Version Control" order="2" weight="0.3295099" />
       <window_info anchor="bottom" id="Python Console" order="3" weight="0.32969603" />
-      <window_info active="true" anchor="bottom" id="Run" order="8" sideWeight="0.4998012" visible="true" weight="0.32638165" />
+      <window_info anchor="bottom" id="Run" order="8" sideWeight="0.4998012" visible="true" weight="0.32638165" />
       <window_info anchor="bottom" id="Terminal" order="4" weight="0.3281372" />
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.12291667" />
       <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="4" weight="0.32962227" />
-      <window_info anchor="right" id="SciView" order="3" visible="true" weight="0.328125" />
+      <window_info active="true" anchor="right" id="SciView" order="3" visible="true" weight="0.328125" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="9" weight="0.39937434" />
@@ -478,10 +484,10 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Default Changelist" />
     <MESSAGE value="Added median" />
     <MESSAGE value="Added all osrts" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added all osrts" />
+    <MESSAGE value="Default Changelist" />
+    <option name="LAST_COMMIT_MESSAGE" value="Default Changelist" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -501,11 +507,6 @@
           <line>109</line>
           <option name="timeStamp" value="100" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/main.py</url>
-          <line>65</line>
-          <option name="timeStamp" value="17" />
-        </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
         <breakpoint type="python-exception">
@@ -514,7 +515,7 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="19" />
+      <option name="time" value="22" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
@@ -672,6 +673,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/setup.py" />
     <entry file="file://$USER_HOME$/Anaconda3/Lib/random.py" />
+    <entry file="file://$PROJECT_DIR$/tests/test_data_utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="395">
+          <caret line="105" column="31" lean-forward="true" selection-start-line="105" selection-start-column="31" selection-end-line="105" selection-end-column="31" />
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/time_series.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="144">
@@ -684,28 +695,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/definitions.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="192">
-          <caret line="12" column="21" lean-forward="true" selection-start-line="11" selection-start-column="19" selection-end-line="12" selection-end-column="21" />
+        <state relative-caret-position="432">
+          <caret line="27" lean-forward="true" selection-start-line="27" selection-end-line="27" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tests/test_data_utils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="395">
-          <caret line="105" column="31" lean-forward="true" selection-start-line="105" selection-start-column="31" selection-end-line="105" selection-end-column="31" />
-          <folding>
-            <element signature="e#0#14#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/data_utils.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="113">
-          <caret line="119" column="81" lean-forward="true" selection-start-line="119" selection-start-column="81" selection-end-line="119" selection-end-column="81" />
+        <state relative-caret-position="689">
+          <caret line="121" column="30" lean-forward="true" selection-start-line="121" selection-start-column="30" selection-end-line="121" selection-end-column="30" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
           </folding>
@@ -714,8 +715,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="304">
-          <caret line="29" column="56" selection-start-line="29" selection-start-column="56" selection-end-line="29" selection-end-column="56" />
+        <state relative-caret-position="314">
+          <caret line="48" column="5" lean-forward="true" selection-start-line="48" selection-start-column="5" selection-end-line="48" selection-end-column="5" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
           </folding>
