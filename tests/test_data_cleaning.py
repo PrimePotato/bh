@@ -21,7 +21,8 @@ class TestDataCleaning(TestCase):
         file_outliers = {}
         for name, file_path in CSV_PATHS.items():
             outliers = check_file_data(file_path)
-            self.assertEqual(len(outliers), len(set(outliers)))
+            outliers_dates = [d for d, v, o in outliers]
+            self.assertEqual(len(outliers_dates), len(set(outliers_dates)))
             counts = {k: len(list(g)) for k, g in groupby(outliers, lambda x: x[2])}
             logging.info(name.name + "  Total: " + str(len(outliers)) + "  Breakdown: " + str(counts))
             file_outliers[name] = outliers

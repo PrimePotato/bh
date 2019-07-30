@@ -1,7 +1,9 @@
 import datetime
+from itertools import groupby
 from typing import List, Tuple
 
 import src.data_utils as du
+from definitions import DataIssue
 from src.time_series import TimeSeries
 
 
@@ -33,8 +35,8 @@ def check_file_data(file_path: str) -> List[Tuple[datetime.date, float, str]]:
     rem_na, missing_na = du.forward_fill_na(ts.prices)
     no_zeros, missing_zeros = du.forward_fill_zeros(rem_na)
 
-    all_outliers = [(ts.dates[i], ts.prices[i], "Missing - NA") for i in missing_na]
-    all_outliers += [(ts.dates[i], ts.prices[i], "Missing - Zero") for i in missing_zeros]
+    all_outliers = [(ts.dates[i], ts.prices[i], DataIssue.MissingNA) for i in missing_na]
+    all_outliers += [(ts.dates[i], ts.prices[i], DataIssue.MissingZero) for i in missing_zeros]
 
     pc = du.pct_change(no_zeros)
     pc, _ = du.forward_fill_na(pc, 0.)
@@ -43,13 +45,21 @@ def check_file_data(file_path: str) -> List[Tuple[datetime.date, float, str]]:
     iqr_outliers, cleaned = clean_returns(cleaned, du.outliers_iqr, iqr_pass_thresholds)
     ewz_outliers, cleaned = clean_returns(cleaned, du.outliers_zcs, ewz_pass_thresholds)
 
-    all_outliers += [(ts.dates[i], ts.prices[i], "Outlier - MAD") for s in mad_outliers for i in s]
-    all_outliers += [(ts.dates[i], ts.prices[i], "Outlier - IQR") for s in iqr_outliers for i in s]
-    all_outliers += [(ts.dates[i], ts.prices[i], "Outlier - EWZ") for s in ewz_outliers for i in s]
+    all_outliers += [(ts.dates[i], ts.prices[i], DataIssue.OutlierNA) for s in mad_outliers for i in s]
+    all_outliers += [(ts.dates[i], ts.prices[i], DataIssue.OutlierIQR) for s in iqr_outliers for i in s]
+    all_outliers += [(ts.dates[i], ts.prices[i], DataIssue.OutlierEWZ) for s in ewz_outliers for i in s]
 
     stale_dates = du.stale_data(ts.prices, ts.dates, datetime.timedelta(weeks=1))
-
     all_outliers += [(sd[1], ts.prices[sd[0]], "Stale Data") for sd in stale_dates]
 
-    return all_outliers
+    dict_outliers = {}
+    for outlier in all_outliers:
+        if outlier[0] in dict_outliers:
+            dict_outliers[outlier[0]] = outlier
+        else:
+            if outlier[2] < dict_outliers[outlier[0]][2]:
+                dict_outliers[outlier[0]] = outlier
 
+    unique_outliers = [o for k, o in dict_outliers]
+
+    return unique_outliers
