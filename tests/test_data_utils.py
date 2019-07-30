@@ -14,7 +14,7 @@ class TestDataUtils(TestCase):
         cls.hdr_date = "Date"
         cls.hdr_last_price = "Last Price"
 
-        cls.mock_outlier_series = [random.gauss(0, 0.1) for _ in range(100)] + [random.gauss(1e6, 1)] + [
+        cls.mock_outlier_series = [random.gauss(0, 1.0) for _ in range(100)] + [random.gauss(1e6, 1.0)] + [
             random.gauss(0, 0.1) for _ in range(100)]
 
         cls.parsers = {
@@ -45,7 +45,7 @@ class TestDataUtils(TestCase):
 
     def test_pct_change(self):
         pct = pct_change(self.data[DataSource.EQ_CLEAN][self.hdr_last_price])
-        pass
+        self.assertAlmostEqual(pct[-1], -0.007718753634850242)
 
     def test_ewma(self):
         ewma = ew_ma(self.data[DataSource.EQ_CLEAN][self.hdr_last_price])
@@ -55,17 +55,17 @@ class TestDataUtils(TestCase):
     def test_ew_var(self):
         ewv = ew_var(self.data[DataSource.EQ_CLEAN][self.hdr_last_price])
         self.assertEqual(len(ewv), len(self.data[DataSource.EQ_CLEAN][self.hdr_last_price]))
-        self.assertAlmostEqual(ewv[-1], 63138.114964302345, delta=1e-14)
+        self.assertAlmostEqual(ewv[-1], 63138.11496430242, delta=1e-14)
 
     def test_ew_std(self):
         ewv = ew_std(self.data[DataSource.EQ_CLEAN][self.hdr_last_price])
         self.assertEqual(len(ewv), len(self.data[DataSource.EQ_CLEAN][self.hdr_last_price]))
-        self.assertAlmostEqual(ewv[-1], 251.27298892698823, delta=1e-14)
+        self.assertAlmostEqual(ewv[-1], 251.27298892698838, delta=1e-14)
 
     def test_ew_zsc(self):
         ewv = ew_zsc(self.data[DataSource.EQ_CLEAN][self.hdr_last_price])
         self.assertEqual(len(ewv), len(self.data[DataSource.EQ_CLEAN][self.hdr_last_price]))
-        self.assertAlmostEqual(ewv[-1], -0.9105825661366617 , delta=1e-14)
+        self.assertAlmostEqual(ewv[-1], -0.9105825661366617, delta=1e-14)
 
     def test_forward_fill_na(self):
         cleaned = forward_fill_na(self.data[DataSource.EQ_CLEAN][self.hdr_last_price])
@@ -117,5 +117,5 @@ class TestDataUtils(TestCase):
         self.assertEqual(i[0], 100)
 
     def test_outliers_zcs(self):
-        i = outliers_zcs(self.mock_outlier_series)
+        i = outliers_zcs(self.mock_outlier_series, initial=1.)
         self.assertEqual(i[0], 100)

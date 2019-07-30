@@ -70,7 +70,7 @@ def ew_ma(series: List[float], decay: float = 0.01) -> List[float]:
     return result
 
 
-def ew_var(series: List[float], decay: float = 0.01, initial=0.1) -> List[float]:
+def ew_var(series: List[float], decay: float = 0.01, initial=0.2) -> List[float]:
     ewma = ew_ma(series, decay)
     diff = [initial]
     for i in range(1, len(ewma)):
@@ -79,8 +79,8 @@ def ew_var(series: List[float], decay: float = 0.01, initial=0.1) -> List[float]
     return ew_ma(diff, decay)
 
 
-def ew_std(series: List[float], decay: float = 0.01) -> List[float]:
-    return [math.sqrt(x) for x in ew_var(series, decay)]
+def ew_std(series: List[float], decay: float = 0.01, initial=0.2) -> List[float]:
+    return [math.sqrt(x) for x in ew_var(series, decay, initial)]
 
 
 def fill_find_next(i, sorted_seq):
@@ -100,8 +100,8 @@ def find_first_in_pair(data):
     return [next(g)[1] for k, g in groupby(enumerate(data), lambda t: t[1] - t[0])]
 
 
-def outliers_zcs(series, decay=0.01, threshold=6):
-    ez = ew_zsc(series, decay)
+def outliers_zcs(series, decay=0.01, threshold=6, initial=0.2):
+    ez = ew_zsc(series, decay, initial)
     ez_outliers = [i for i, x in enumerate(ez) if abs(x) > threshold]
     return ez_outliers
 
@@ -140,11 +140,11 @@ def fill_returns_outliers(returns, outliers):
     return cleaned
 
 
-def ew_zsc(series: List[float], decay: float = 0.01) -> List[float]:
+def ew_zsc(series: List[float], decay: float = 0.01, initial=0.2) -> List[float]:
     ma = deque(ew_ma(series, decay))
     ma.rotate(1)
     ma[0] = ma[1]
-    std = deque(ew_std(series, decay))
+    std = deque(ew_std(series, decay, initial))
     std.rotate(1)
     std[0] = std[1]
     return [(s - a) / v for s, a, v in zip(series, ma, std)]
@@ -253,12 +253,12 @@ def iqr_bounds(data: List[float], k: float = 5) -> Tuple[float, float]:
     return m - k * (m - l), m + k * (h - m)
 
 
-def mad_z_score(data: List[float], min_dev=1e-14) -> float:
+def mad_z_score(data: List[float]) -> float:
     try:
+        min_dev = 0.67449 * 0.005 / 16
         m = median(data)
         mad = median([abs(y - m) for y in data])
-        if mad < min_dev:
-            mad = 0.005 / math.sqrt(252)
+        mad = min_dev if mad < min_dev else mad
         return 0.67449 * (data[-1] - m) / mad
     except Exception:
         return 0.
