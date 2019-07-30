@@ -6,8 +6,10 @@ from collections import defaultdict, deque
 from itertools import groupby
 from typing import List, Tuple
 
-
 float_tolerance = 1e-14
+
+
+# TODO: add more typing
 
 
 def read_csv(file_name: str, parsers: dict) -> dict:
