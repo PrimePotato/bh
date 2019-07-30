@@ -28,29 +28,33 @@ def check_file_data(file_path: str) -> List[Tuple[datetime.date, float, str]]:
     iqr_pass_thresholds = [(200, 7.5)]
     ewz_pass_thresholds = [(0.05, 6)]
 
+    # Load Data
     data = du.read_csv(file_path, column_parsers)
     ts = TimeSeries(data["Date"], data["Last Price"])
 
+    # remove NA's and zeros
     rem_na, missing_na = du.forward_fill_na(ts.prices)
     no_zeros, missing_zeros = du.forward_fill_zeros(rem_na)
-
     all_outliers = [(ts.dates[i], ts.prices[i], DataIssue.MissingNA) for i in missing_na]
     all_outliers += [(ts.dates[i], ts.prices[i], DataIssue.MissingZero) for i in missing_zeros]
 
+    # calc percent change
     pc = du.pct_change(no_zeros)
     pc, _ = du.forward_fill_na(pc, 0.)
 
+    # find outliers
     mad_outliers, cleaned = clean_returns(pc, du.outliers_mad, mad_pass_thresholds)
     iqr_outliers, cleaned = clean_returns(cleaned, du.outliers_iqr, iqr_pass_thresholds)
     ewz_outliers, cleaned = clean_returns(cleaned, du.outliers_zcs, ewz_pass_thresholds)
-
     all_outliers += [(ts.dates[i], ts.prices[i], DataIssue.OutlierMAD) for s in mad_outliers for i in s]
     all_outliers += [(ts.dates[i], ts.prices[i], DataIssue.OutlierIQR) for s in iqr_outliers for i in s]
     all_outliers += [(ts.dates[i], ts.prices[i], DataIssue.OutlierEWZ) for s in ewz_outliers for i in s]
 
+    # find stale data
     stale_dates = du.stale_data(ts.prices, ts.dates, datetime.timedelta(weeks=1))
     all_outliers += [(sd[1], ts.prices[sd[0]], DataIssue.Stale) for sd in stale_dates]
 
+    # Collate dates and remove duplicates
     dict_outliers = {}
     for outlier in all_outliers:
         if outlier[0] not in dict_outliers:

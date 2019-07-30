@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="69377374-6617-4cff-b001-f894a2fcad43" name="Default Changelist" comment="Cleaned up unit tests">
-      <change beforePath="$PROJECT_DIR$/.idea/bh.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/bh.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="69377374-6617-4cff-b001-f894a2fcad43" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/definitions.py" beforeDir="false" afterPath="$PROJECT_DIR$/definitions.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/data_cleaning.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/data_cleaning.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -73,11 +70,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/definitions.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="391">
-              <caret line="23" column="18" lean-forward="true" selection-start-line="23" selection-start-column="18" selection-end-line="23" selection-end-column="18" />
+            <state relative-caret-position="612">
+              <caret line="36" lean-forward="true" selection-start-line="36" selection-end-line="36" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -109,11 +106,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/data_cleaning.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1003">
-              <caret line="64" selection-start-line="64" selection-end-line="64" />
+            <state relative-caret-position="668">
+              <caret line="44" column="19" lean-forward="true" selection-start-line="44" selection-start-column="19" selection-end-line="44" selection-end-column="19" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -136,9 +133,9 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/readme.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-            <state split_layout="FIRST">
-              <first_editor relative-caret-position="323">
-                <caret line="19" selection-start-line="19" selection-end-line="19" />
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="374">
+                <caret line="22" lean-forward="true" selection-start-line="22" selection-end-line="22" />
               </first_editor>
               <second_editor />
             </state>
@@ -196,8 +193,8 @@
         <option value="$PROJECT_DIR$/src/data_utils.py" />
         <option value="$PROJECT_DIR$/tests/test_data_utils.py" />
         <option value="$PROJECT_DIR$/tests/test_data_cleaning.py" />
-        <option value="$PROJECT_DIR$/src/data_cleaning.py" />
         <option value="$PROJECT_DIR$/definitions.py" />
+        <option value="$PROJECT_DIR$/src/data_cleaning.py" />
       </list>
     </option>
   </component>
@@ -373,7 +370,7 @@
       <updated>1564130850695</updated>
       <workItem from="1564130851907" duration="40943000" />
       <workItem from="1564416810530" duration="18896000" />
-      <workItem from="1564509974557" duration="302000" />
+      <workItem from="1564509974557" duration="548000" />
     </task>
     <task id="LOCAL-00001" summary="Default Changelist">
       <created>1564396253011</created>
@@ -543,13 +540,17 @@
       <option name="project" value="LOCAL" />
       <updated>1564503803259</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="Cleaned up unit tests">
+      <created>1564510279592</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1564510279593</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="Unittests_for_test_data_cleaning_TestDataCleaning_test_data_cleaner - 2019.07.30 at 17h 17m 19s.xml">
-      <configuration name="Unittests for test_data_cleaning.TestDataCleaning.test_data_cleaner" configurationId="tests" />
-    </history-entry>
     <history-entry file="Unittests_for_test_data_cleaning_TestDataCleaning_test_data_cleaner - 2019.07.30 at 17h 17m 27s.xml">
       <configuration name="Unittests for test_data_cleaning.TestDataCleaning.test_data_cleaner" configurationId="tests" />
     </history-entry>
@@ -577,9 +578,12 @@
     <history-entry file="Unittests_in_tests - 2019.07.30 at 17h 23m 22s.xml">
       <configuration name="Unittests in tests" configurationId="tests" />
     </history-entry>
+    <history-entry file="Unittests_in_tests - 2019.07.30 at 19h 09m 04s.xml">
+      <configuration name="Unittests in tests" configurationId="tests" />
+    </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="60141000" />
+    <option name="totallyTimeSpent" value="60387000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -594,7 +598,7 @@
     <frame x="-7" y="-7" width="2575" height="1415" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.12365805" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.12365805" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
@@ -605,7 +609,7 @@
       <window_info anchor="bottom" id="Event Log" order="5" sideWeight="0.5001988" side_tool="true" weight="0.3257989" />
       <window_info anchor="bottom" id="Message" order="6" />
       <window_info anchor="bottom" id="Find" order="7" weight="0.3289166" />
-      <window_info active="true" anchor="bottom" id="Run" order="8" sideWeight="0.4998012" visible="true" weight="0.32268122" />
+      <window_info anchor="bottom" id="Run" order="8" sideWeight="0.4998012" visible="true" weight="0.32268122" />
       <window_info anchor="bottom" id="Debug" order="9" weight="0.44942647" />
       <window_info anchor="bottom" id="Cvs" order="10" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="11" weight="0.4" />
@@ -783,16 +787,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/data_cleaning.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1003">
-          <caret line="64" selection-start-line="64" selection-end-line="64" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/time_series.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
@@ -803,23 +797,33 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/definitions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="612">
+          <caret line="36" lean-forward="true" selection-start-line="36" selection-end-line="36" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/readme.md">
       <provider editor-type-id="text-editor" />
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="FIRST">
-          <first_editor relative-caret-position="323">
-            <caret line="19" selection-start-line="19" selection-end-line="19" />
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="374">
+            <caret line="22" lean-forward="true" selection-start-line="22" selection-end-line="22" />
           </first_editor>
           <second_editor />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/definitions.py">
+    <entry file="file://$PROJECT_DIR$/src/data_cleaning.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="23" column="18" lean-forward="true" selection-start-line="23" selection-start-column="18" selection-end-line="23" selection-end-column="18" />
+        <state relative-caret-position="668">
+          <caret line="44" column="19" lean-forward="true" selection-start-line="44" selection-start-column="19" selection-end-line="44" selection-end-column="19" />
           <folding>
-            <element signature="e#0#9#0" expanded="true" />
+            <element signature="e#0#15#0" expanded="true" />
           </folding>
         </state>
       </provider>

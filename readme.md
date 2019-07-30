@@ -6,8 +6,8 @@
 * The module 'src.data_utils' contains all the methods I needed due to being restricted to the standard library.   
 
 ##### Thought Process
-* Since it specified data must be investigated in ascending order, I avoid using forward looking measures, for example using the standard dev and average of the whole data set.
-* Therefore the cleaning methods use a rolling window approach or an exponential weighting.
+ Data must be investigated in ascending order, so I avoid using forward looking measures, for example using the standard dev and average of the whole data set. As a result the cleaning methods use a rolling window approach or an exponential weighting.
+
 
 ##### Outlier Identification
 I used 3 techniques and did multiple passes:
