@@ -23,9 +23,9 @@ def check_file_data(file_path: str) -> List[Tuple[datetime.date, float, str]]:
         'Last Price': du.parse_float
     }
 
-    mad_pass_thresholds = [(10, 20), (100, 8), (200, 7)]
-    iqr_pass_thresholds = [(100, 10)]
-    ewz_pass_thresholds = [(0.05, 5.5)]
+    mad_pass_thresholds = [(10, 20), (100, 10), (200, 8)]
+    iqr_pass_thresholds = [(200, 7.5)]
+    ewz_pass_thresholds = [(0.05, 6)]
 
     data = du.read_csv(file_path, column_parsers)
     ts = TimeSeries(data["Date"], data["Last Price"])
