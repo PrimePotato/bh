@@ -14,17 +14,17 @@ import logging
 def load_reports():
     mad_pass_thresholds = [
         (10, 20),
-        (30, 12),
-        (100, 10),
+        # (30, 12),
+        # (100, 10),
     ]
 
     iqr_pass_thresholds = [
-        (20, 25),
-        (50, 15)
+        # (20, 25),
+        # (50, 15)
     ]
 
     ewz_pass_thresholds = [
-        (0.1, 5.5)
+        # (0.1, 5.5)
     ]
 
     column_parsers = {
@@ -47,34 +47,34 @@ def load_reports():
         for n, t in mad_pass_thresholds:
             outliers = du.outliers_mad(mad_pass, n, t)
             mad_outliers.append(outliers)
-            du.forward_fill_outliers(mad_pass, outliers)
+            # du.forward_fill_outliers(mad_pass, outliers)
 
         iqr_outliers = []
         iqr_pass = mad_pass
         for n, k in iqr_pass_thresholds:
             outliers = du.outliers_iqr(iqr_pass, n, k)
             iqr_outliers.append(outliers)
-            du.forward_fill_outliers(iqr_pass, outliers)
+            # du.forward_fill_outliers(iqr_pass, outliers)
 
         ewz_outliers = []
         ewz_pass = iqr_pass
         for d, t in ewz_pass_thresholds:
             outliers = du.outliers_zcs(ewz_pass, d, t)
             ewz_outliers.append(outliers)
-            du.forward_fill_outliers(ewz_pass, outliers)
+            # du.forward_fill_outliers(ewz_pass, outliers)
 
         stale_dates = du.stale_data(ts.prices, ts.dates, datetime.timedelta(weeks=1))
 
         total = {
-            'total': na_count + sum(mad_outliers) + sum(ewz_outliers) + sum(iqr_outliers) + len(
-                stale_dates) + zero_count,
             'na_count': na_count,
-            'mad_count': mad_outliers,
-            'iqr_count': iqr_outliers,
-            'ewz_count': ewz_outliers,
+            'mad_count': sum([sum(s) for s in mad_outliers]),
+            'iqr_count': sum([sum(s) for s in iqr_outliers]),
+            'ewz_count': sum([sum(s) for s in ewz_outliers]),
             'zero_count': zero_count,
-            'stale_dates': (len(stale_dates), stale_dates)
+            'stale_dates': (len(stale_dates), stale_dates),
+            'total': na_count + 1 + len(stale_dates) + zero_count + sum([sum(s) for s in mad_outliers])+ sum([sum(s) for s in iqr_outliers]) +sum([sum(s) for s in ewz_outliers])
         }
+
         pd.Series(ewz_pass).plot(title=name)
         plt.show()
 

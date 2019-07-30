@@ -116,4 +116,3 @@ class TestDataUtils(TestCase):
     def test_outliers_zcs(self):
         i = outliers_zcs(self.mock_outlier_series)
         self.assertEqual(i[0], 100)
-    # self.mock_outlier_series[i[0]]

@@ -56,7 +56,7 @@ def pct_change(series: List[float]) -> List[float]:
     prev = deque(series)
     prev.rotate(1)
     prev[0] = 0.
-    return [(n - p) / n if n != 0 else float('nan') for n, p in zip(series, prev)]
+    return [(n - p) / p if n != 0 else float('nan') for n, p in zip(series, prev)]
 
 
 def ew_ma(series: List[float], decay: float = 0.01) -> List[float]:
@@ -101,6 +101,10 @@ def outliers_zcs(series, decay=0.01, threshold=6):
     ez = ew_zsc(series, decay)
     ez_outliers = [i for i, x in enumerate(ez) if abs(x) > threshold]
     return find_first_in_pair(ez_outliers)
+
+
+def replace_outliers(series, outliers, value):
+    return [value if i in outliers else s for i, s in enumerate(series)]
 
 
 def outliers_iqr(series, n=30, k=5):
