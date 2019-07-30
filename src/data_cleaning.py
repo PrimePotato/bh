@@ -56,11 +56,8 @@ def check_file_data(file_path: str) -> List[Tuple[datetime.date, float, str]]:
         if outlier[0] not in dict_outliers:
             dict_outliers[outlier[0]] = outlier
         else:
-            try:
-                if outlier[2].value < dict_outliers[outlier[0]][2].value:
-                    dict_outliers[outlier[0]] = outlier
-            except Exception:
-                pass
+            if outlier[2].value < dict_outliers[outlier[0]][2].value:
+                dict_outliers[outlier[0]] = outlier
 
     unique_outliers = [(o[0], o[1], str(o[2])) for k, o in dict_outliers.items()]
 
