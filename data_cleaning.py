@@ -1,13 +1,7 @@
 import datetime
-import logging
-from itertools import groupby
 from typing import List, Tuple
 
-import matplotlib.pyplot as plt
-import pandas as pd
-
 import src.data_utils as du
-from definitions import CSV_PATHS
 from src.time_series import TimeSeries
 
 
@@ -36,8 +30,8 @@ def check_file_data(file_path: str) -> List[Tuple[datetime.date, float, str]]:
     data = du.read_csv(file_path, column_parsers)
     ts = TimeSeries(data["Date"], data["Last Price"])
 
-    rem_na, missing_na = du.forward_fill_na(ts.prices)  # TODO: add count
-    no_zeros, missing_zeros = du.forward_fill_zeros(rem_na)  # TODO: add count
+    rem_na, missing_na = du.forward_fill_na(ts.prices)
+    no_zeros, missing_zeros = du.forward_fill_zeros(rem_na)
 
     all_outliers = [(ts.dates[i], ts.prices[i], "Missing - NA") for i in missing_na]
     all_outliers += [(ts.dates[i], ts.prices[i], "Missing - Zero") for i in missing_zeros]
@@ -59,13 +53,3 @@ def check_file_data(file_path: str) -> List[Tuple[datetime.date, float, str]]:
 
     return all_outliers
 
-
-def data_cleaner():
-    for name, file_path in CSV_PATHS.items():
-        outliers = check_file_data(file_path)
-        counts = {k: len(list(g)) for k, g in groupby(outliers, lambda x: x[2])}
-        logging.info(name.name + "  Total: " + str(len(outliers)) + "  Breakdown: " + str(counts))
-
-
-if __name__ == "__main__":
-    data_cleaner()
