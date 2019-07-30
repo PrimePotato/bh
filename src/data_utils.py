@@ -6,8 +6,11 @@ from collections import defaultdict, deque
 from itertools import groupby
 from typing import List, Tuple
 
-tol = 1e-14
+#
+# Utils class that mimics much the functionality I am missing from Pandas and Numpy.
+#
 
+tol = 1e-14
 
 def read_csv(file_name: str, parsers: dict) -> dict:
     with open(file_name) as csvFile:
@@ -17,10 +20,10 @@ def read_csv(file_name: str, parsers: dict) -> dict:
     return {k: [parsers[k](l) for l in v] for k, v in data.items()}
 
 
-def parse_date(dt: str) -> datetime:
+def parse_date(dt: str) -> datetime.date:
     try:
         d = [int(x) for x in dt.split("/")]
-        return datetime.datetime(d[2], d[1], d[0])
+        return datetime.date(d[2], d[1], d[0])
     except ValueError:
         return None
 
@@ -147,8 +150,9 @@ def ew_zsc(series: List[float], decay: float = 0.01) -> List[float]:
     return [(s - a) / v for s, a, v in zip(series, ma, std)]
 
 
-def forward_fill_na(series: List[float], val=None) -> Tuple[List[float], int]:
+def forward_fill_na(series: List[float], val=None) -> Tuple[List[float], List[float]]:
     cleaned = []
+    missing = []
     last_val = float('nan')
     for s in series:
         if s == s and abs(s) < tol:  # TODO: check zero is OK assumption to make
@@ -163,20 +167,23 @@ def forward_fill_na(series: List[float], val=None) -> Tuple[List[float], int]:
     else:
         i = 0
         for s in series:
+            i += 1
             if s == s:
                 last_val = s
-                i += 1
+            else:
+                missing.append(i)
             cleaned.append(last_val)
-    return cleaned, len(cleaned) - i
+    return cleaned, missing
 
 
-def forward_fill_zeros(series: List[float]) -> Tuple[List[float], int]:
+def forward_fill_zeros(series: List[float]) -> Tuple[List[float], List[float]]:
     return forward_fill_val(series, 0)
 
 
-def forward_fill_val(series: List[float], val: float) -> Tuple[List[float], int]:
+def forward_fill_val(series: List[float], val: float) -> Tuple[List[float], List[float]]:
     cleaned = []
     last_val = float('nan')
+    missing = []
     for s in series:
         if (s - val) > 1e-14:  # TODO: check zero is OK assumption to make, throw error
             last_val = s
@@ -186,8 +193,10 @@ def forward_fill_val(series: List[float], val: float) -> Tuple[List[float], int]
         if abs(s - val) > 1e-14:
             last_val = s
             i += 1
+        else:
+            missing.append(i)
         cleaned.append(last_val)
-    return cleaned, len(cleaned) - i
+    return cleaned, missing
 
 
 def median(l, pivot_fn=random.choice):
@@ -201,7 +210,7 @@ def median(l, pivot_fn=random.choice):
 def partition_select(data: List[float], k: int, pivot_fn) -> int:
     if len(data) == 1:
         assert k == 0
-        return data[0]
+        return int(data[0])
     p = pivot_fn(data)
     lower = [d for d in data if d < p]
     higher = [d for d in data if d > p]
@@ -210,7 +219,7 @@ def partition_select(data: List[float], k: int, pivot_fn) -> int:
     if k < len(lower):
         return partition_select(lower, k, pivot_fn)
     elif k < len(lower) + len(pivots):
-        return pivots[0]
+        return int(pivots[0])
     else:
         return partition_select(higher, k - len(lower) - len(pivots), pivot_fn)
 
