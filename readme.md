@@ -14,7 +14,8 @@ I used 3 techniques and did multiple passes:
 * IQR - inter quartile range
 * MAD - Mean absolute deviation
 * EWZ - Exponentially weighted Z-Score 
-The arguments used  in each method can be found in 'src.data_cleaning'
+
+The parameters used for each method can be found in 'src.data_cleaning'
 
 
  
