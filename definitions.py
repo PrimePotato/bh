@@ -18,10 +18,10 @@ class DataSource(Enum):
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 CSV_PATHS = {
-    # DataSource.EQ_CLEAN: os.path.join(ROOT_DIR, "resources", "Equity_history_clean.csv"),
-    # DataSource.FX_CLEAN: os.path.join(ROOT_DIR, "resources", "FX_history_clean.csv"),
-    # DataSource.IR_CLEAN: os.path.join(ROOT_DIR, "resources", "InterestRate_history_clean.csv"),
-    # DataSource.EQ_RAW: os.path.join(ROOT_DIR, "resources", "Equity_history_raw.csv"),
+    DataSource.EQ_CLEAN: os.path.join(ROOT_DIR, "resources", "Equity_history_clean.csv"),
+    DataSource.FX_CLEAN: os.path.join(ROOT_DIR, "resources", "FX_history_clean.csv"),
+    DataSource.IR_CLEAN: os.path.join(ROOT_DIR, "resources", "InterestRate_history_clean.csv"),
+    DataSource.EQ_RAW: os.path.join(ROOT_DIR, "resources", "Equity_history_raw.csv"),
     DataSource.FX_RAW: os.path.join(ROOT_DIR, "resources", "FX_history_raw.csv"),
-    # DataSource.IR_RAW: os.path.join(ROOT_DIR, "resources", "InterestRate_history_raw.csv")
+    DataSource.IR_RAW: os.path.join(ROOT_DIR, "resources", "InterestRate_history_raw.csv")
 }

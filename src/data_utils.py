@@ -12,6 +12,7 @@ from typing import List, Tuple
 
 tol = 1e-14
 
+
 def read_csv(file_name: str, parsers: dict) -> dict:
     with open(file_name) as csvFile:
         reader = csv.DictReader(csvFile)
@@ -207,10 +208,19 @@ def median(l, pivot_fn=random.choice):
                       partition_select(l, int(len(l) / 2), pivot_fn))
 
 
-def partition_select(data: List[float], k: int, pivot_fn) -> int:
+def median_slow(l):
+    s = sorted(l)
+    n = len(s)
+    if n % 2 == 1:
+        return s[int((n - 1) / 2)]
+    else:
+        return (s[int(n / 2)] + s[int(n / 2 - 1)]) * 0.5
+
+
+def partition_select(data: List[float], k: int, pivot_fn=random.choice):
     if len(data) == 1:
         assert k == 0
-        return int(data[0])
+        return data[0]
     p = pivot_fn(data)
     lower = [d for d in data if d < p]
     higher = [d for d in data if d > p]
@@ -219,7 +229,7 @@ def partition_select(data: List[float], k: int, pivot_fn) -> int:
     if k < len(lower):
         return partition_select(lower, k, pivot_fn)
     elif k < len(lower) + len(pivots):
-        return int(pivots[0])
+        return pivots[0]
     else:
         return partition_select(higher, k - len(lower) - len(pivots), pivot_fn)
 
@@ -229,9 +239,9 @@ def quartiles(data: List[float]):
         m = median(data)
         ql = median([d for d in data if d <= m])
         qh = median([d for d in data if d >= m])
+        return ql, qh
     except Exception:
-        pass
-    return ql, qh
+        return None, None
 
 
 def rolling_window_apply(data, func, n=10, na_value=float('nan')):
