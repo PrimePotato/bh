@@ -7,10 +7,10 @@ from itertools import groupby
 from typing import List, Tuple
 
 #
-# Utils class that mimics much the functionality I am missing from Pandas and Numpy.
+# Data utils class that mimics the functionality I am missing from Pandas and Numpy.
 #
 
-tol = 1e-14
+float_tolerance = 1e-14
 
 
 def read_csv(file_name: str, parsers: dict) -> dict:
@@ -156,7 +156,7 @@ def forward_fill_na(series: List[float], val=None) -> Tuple[List[float], List[fl
     missing = []
     last_val = float('nan')
     for s in series:
-        if s == s and abs(s) < tol:  # TODO: check zero is OK assumption to make
+        if s == s and abs(s) < float_tolerance:  # TODO: check zero is OK assumption to make
             last_val = s
             break
     if val:
