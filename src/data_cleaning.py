@@ -1,5 +1,4 @@
 import datetime
-from itertools import groupby
 from typing import List, Tuple
 
 import src.data_utils as du
@@ -50,16 +49,19 @@ def check_file_data(file_path: str) -> List[Tuple[datetime.date, float, str]]:
     all_outliers += [(ts.dates[i], ts.prices[i], DataIssue.OutlierEWZ) for s in ewz_outliers for i in s]
 
     stale_dates = du.stale_data(ts.prices, ts.dates, datetime.timedelta(weeks=1))
-    all_outliers += [(sd[1], ts.prices[sd[0]], "Stale Data") for sd in stale_dates]
+    all_outliers += [(sd[1], ts.prices[sd[0]], DataIssue.Stale) for sd in stale_dates]
 
     dict_outliers = {}
     for outlier in all_outliers:
         if outlier[0] not in dict_outliers:
             dict_outliers[outlier[0]] = outlier
         else:
-            if outlier[2] < dict_outliers[outlier[0]][2]:
-                dict_outliers[outlier[0]] = outlier
+            try:
+                if outlier[2].value < dict_outliers[outlier[0]][2].value:
+                    dict_outliers[outlier[0]] = outlier
+            except Exception:
+                pass
 
-    unique_outliers = [o for k, o in dict_outliers]
+    unique_outliers = [(o[0], o[1], str(o[2])) for k, o in dict_outliers.items()]
 
     return unique_outliers
