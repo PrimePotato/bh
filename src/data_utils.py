@@ -56,7 +56,7 @@ def pct_change(series: List[float]) -> List[float]:
     prev = deque(series)
     prev.rotate(1)
     prev[0] = 0.
-    return [(n - p) / p if n != 0 else float('nan') for n, p in zip(series, prev)]
+    return [(n - p) / p if p != 0 else float('nan') for n, p in zip(series, prev)]
 
 
 def ew_ma(series: List[float], decay: float = 0.01) -> List[float]:
@@ -90,7 +90,7 @@ def fill_find_next(i, sorted_seq):
 def outliers_mad(series, n=30, threshold=6):
     mad_z = rolling_window_apply(series, mad_z_score, n)
     mad_z_outliers = [i - 1 for i, x in enumerate(mad_z) if abs(x) > threshold]
-    return find_first_in_pair(mad_z_outliers)
+    return mad_z_outliers
 
 
 def find_first_in_pair(data):
@@ -100,7 +100,7 @@ def find_first_in_pair(data):
 def outliers_zcs(series, decay=0.01, threshold=6):
     ez = ew_zsc(series, decay)
     ez_outliers = [i for i, x in enumerate(ez) if abs(x) > threshold]
-    return find_first_in_pair(ez_outliers)
+    return ez_outliers
 
 
 def replace_outliers(series, outliers, value):
@@ -113,19 +113,28 @@ def outliers_iqr(series, n=30, k=5):
     for i, (s, (q1, q2)) in enumerate(zip(series, qs)):
         if s < q1 or q2 < s:
             qs_outliers.append(i)
-    return find_first_in_pair(qs_outliers)
+    return qs_outliers
 
 
 def forward_fill_outliers(series, outlier_indicies):
-    good_indiicies = sorted(list(set(range(len(series))) - set(outlier_indicies)))
+    good_indicies = sorted(list(set(range(len(series))) - set(outlier_indicies)))
     try:
         filled = series.copy()
         for oi in outlier_indicies:
-            ri = fill_find_next(oi, good_indiicies)
+            ri = fill_find_next(oi, good_indicies)
             filled[oi] = series[ri]
         return filled
     except Exception:
         return None
+
+
+def fill_returns_outliers(returns, outliers):
+    cleaned = returns.copy()
+    for oi in outliers:
+        cleaned[oi] = 0.
+        if oi + 1 <= len(cleaned):
+            cleaned[oi + 1] = 1 - (1 + returns[oi]) * (1 + returns[oi + 1])
+    return cleaned
 
 
 def ew_zsc(series: List[float], decay: float = 0.01) -> List[float]:
