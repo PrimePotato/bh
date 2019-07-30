@@ -6,9 +6,6 @@ from collections import defaultdict, deque
 from itertools import groupby
 from typing import List, Tuple
 
-#
-# Data utils class that mimics the functionality I am missing from Pandas and Numpy.
-#
 
 float_tolerance = 1e-14
 
@@ -244,7 +241,7 @@ def quartiles(data: List[float]):
         return None, None
 
 
-def rolling_window_apply(data, func, n=10, na_value=float('nan')):
+def rolling_window_apply(data: List[float], func: any, n: int = 10, na_value: any = float('nan')):
     return [na_value] * n + [func(data[i:i + n]) for i in range(len(data) - n + 1)]
 
 

@@ -23,8 +23,8 @@ def check_file_data(file_path: str) -> List[Tuple[datetime.date, float, str]]:
         'Last Price': du.parse_float
     }
 
-    mad_pass_thresholds = [(10, 20), (100, 10)]
-    iqr_pass_thresholds = [(200, 10)]
+    mad_pass_thresholds = [(10, 20), (100, 8), (200, 7)]
+    iqr_pass_thresholds = [(100, 10)]
     ewz_pass_thresholds = [(0.05, 5.5)]
 
     data = du.read_csv(file_path, column_parsers)
