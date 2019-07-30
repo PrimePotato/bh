@@ -14,6 +14,7 @@ class DataSource(Enum):
     FX_RAW = auto()
     FX_CLEAN = auto()
 
+
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 CSV_PATHS = {

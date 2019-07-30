@@ -2,7 +2,7 @@ import datetime
 from itertools import groupby
 
 from definitions import DataSource, CSV_PATHS
-from src.data_container import TimeSeries
+from src.time_series import TimeSeries
 import src.data_utils as du
 
 import matplotlib.pyplot as plt

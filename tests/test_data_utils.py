@@ -3,7 +3,7 @@ import os
 from unittest import TestCase
 
 from definitions import ROOT_DIR, CSV_PATHS, DataSource
-from src.data_container import TimeSeries
+from src.time_series import TimeSeries
 from src.data_utils import *
 
 
