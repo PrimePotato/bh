@@ -2,7 +2,7 @@
 
 ##### Requested Function Locations
 * The requested function is found in 'src.data_cleaning'
-* The test found in 'test.test_data_cleaning' performs the data cleaning and checks whether they are within the specified bounds
+* The test found in 'test.test_data_cleaning' performs the data cleaning and checks whether the outlier counts are within the specified bounds
 * The module 'src.data_utils' contains all the extra methods required without Pandas and Numpy available.   
 
 ##### Thought Process
